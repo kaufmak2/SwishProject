@@ -49,20 +49,32 @@ def add_today(results):
 		, item["points"], item["rebounds"], item["assists"], item["steals"], item["turnovers"], item["blocks"], item["threesMade"], item["doubleDoublePct"], \
 		item["tripleDoublePct"], item["draftkingsFpts"], item["yahooFpts"], item["fanduelFpts"],item["draftkingsFptsActual"], item["yahooFptsActual"], item["fanduelFptsActual"]))
 
+def check_json(json):
+	json_status = json['data']['status']
+	if json_status == True:
+		return json
+	else:
+		return None
+
+
+
 config = configparser.ConfigParser()
 config.read('config.ini')
 api_key = config['DEFAULT']['api_key']
 
-conn=pymysql.connect(host="localhost",port=3306,user=config['DEFAULT']['sql_user'],password=config['DEFAULT']['sql_key'],db="Swish") ##connects to SQL database
-cur=conn.cursor() 
+today_json = get_json(get_today(), api_key)
+today_json = check_json(today_json)
+print(today_json)
+# conn=pymysql.connect(host="localhost",port=3306,user=config['DEFAULT']['sql_user'],password=config['DEFAULT']['sql_key'],db="Swish") ##connects to SQL database
+# cur=conn.cursor() 
 
 
 
-today_json = get_json(get_today(), api_key)['data']['results']
+# today_json = get_json(get_today(), api_key)['data']['results']
 
-add_today(today_json)
+# add_today(today_json)
 
 
-conn.commit()
-cur.close()
-conn.close()
+# conn.commit()
+# cur.close()
+# conn.close()
